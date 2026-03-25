@@ -1,13 +1,4 @@
-variable "resource_group_name" { type = string }
-variable "location" { type = string }
-variable "prefix" { type = string }
-variable "admin_username" { type = string }
-variable "ssh_public_key" { type = string }
-variable "subnet_id" { type = string }
-variable "vm_count" { type = number }
-variable "cloud_init" { type = string }
-variable "tags" { type = map(string) }
-
+#  Network Interfaces (una por VM)
 resource "azurerm_network_interface" "nic" {
   count               = var.vm_count
   name                = "${var.prefix}-nic-${count.index}"
@@ -19,24 +10,30 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
   }
+
   tags = var.tags
 }
 
+#  Virtual Machines Linux (Ubuntu 22.04 LTS)
 resource "azurerm_linux_virtual_machine" "vm" {
   count               = var.vm_count
   name                = "${var.prefix}-vm-${count.index}"
   location            = var.location
   resource_group_name = var.resource_group_name
-  size                = "Standard_B1s"
+  size                = "Standard_B1s" # ~$8/mes — suficiente para el lab
 
-  admin_username = var.admin_username
+  admin_username        = var.admin_username
   network_interface_ids = [azurerm_network_interface.nic[count.index].id]
+
+  # SSH por clave — sin contraseñas
+  disable_password_authentication = true
 
   admin_ssh_key {
     username   = var.admin_username
     public_key = var.ssh_public_key
   }
 
+  # Ubuntu 22.04 LTS Gen2
   source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
@@ -44,6 +41,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
+  # cloud-init: instala nginx y sirve el hostname
   custom_data = base64encode(var.cloud_init)
 
   os_disk {
@@ -52,11 +50,4 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   tags = var.tags
-}
-
-output "vm_names" {
-  value = [for v in azurerm_linux_virtual_machine.vm : v.name]
-}
-output "nic_ids" {
-  value = [for n in azurerm_network_interface.nic : n.id]
 }
