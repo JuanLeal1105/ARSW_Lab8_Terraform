@@ -1,10 +1,11 @@
-# Resource Group y wiring de módulos
+#  Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = "${var.prefix}-rg"
   location = var.location
   tags     = var.tags
 }
 
+#  Módulo: Red Virtual (VNet + Subnets)
 module "vnet" {
   source              = "../modules/vnet"
   resource_group_name = azurerm_resource_group.rg.name
@@ -13,6 +14,7 @@ module "vnet" {
   tags                = var.tags
 }
 
+#  Módulo: Cómputo (NICs + VMs Linux con cloud-init)
 module "compute" {
   source              = "../modules/compute"
   resource_group_name = azurerm_resource_group.rg.name
@@ -26,6 +28,7 @@ module "compute" {
   tags                = var.tags
 }
 
+#  Módulo: Load Balancer L4 + NSG
 module "lb" {
   source              = "../modules/lb"
   resource_group_name = azurerm_resource_group.rg.name
