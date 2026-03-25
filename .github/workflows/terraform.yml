@@ -87,7 +87,7 @@ jobs:
         id: plan
         run: |
           terraform plan \
-            -var-file=env/dev.tfvars \
+            -var-file=env/dev.example.tfvars \
             -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
             -var="allow_ssh_from_cidr=${{ secrets.ALLOW_SSH_CIDR }}" \
             -out=plan.tfplan \
@@ -163,7 +163,7 @@ jobs:
       - name: Terraform plan (pre-apply)
         run: |
           terraform plan \
-            -var-file=env/dev.tfvars \
+            -var-file=env/dev.example.tfvars \
             -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
             -var="allow_ssh_from_cidr=${{ secrets.ALLOW_SSH_CIDR }}" \
             -out=plan.tfplan \
@@ -212,7 +212,7 @@ jobs:
       - name: Terraform destroy
         run: |
           terraform destroy \
-            -var-file=env/dev.tfvars \
+            -var-file=env/dev.example.tfvars \
             -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
             -var="allow_ssh_from_cidr=${{ secrets.ALLOW_SSH_CIDR }}" \
             -auto-approve
