@@ -255,6 +255,7 @@ El despliegue en el ambiente de producción no se pudo realizar y por eso tanto 
 Azure Bastion permite acceso SSH a las VMs sin exponer el puerto 22 a Internet.
 En lugar de una IP pública por VM, el acceso se hace a través del portal de Azure
 usando el Bastion Host como intermediario seguro.
+![alt text](Images/BastionTerminal.png)
 
 #### **Recursos creados:**
 - `azurerm_public_ip` — IP pública estática Standard para el Bastion
@@ -270,6 +271,7 @@ usando el Bastion Host como intermediario seguro.
 #### **Ventaja de seguridad:** Las VMs no tienen IP pública. El NSG ya no necesita
 exponer el puerto 22 a Internet — el acceso SSH queda restringido al canal
 privado del Bastion.
+![alt text](Images/BastionAzure.png)
 
 ### Reto 2 — Azure Monitor + Budget Alert
 Se implementaron dos tipos de alertas para observabilidad y control de costos.
@@ -290,3 +292,6 @@ Se implementaron dos tipos de alertas para observabilidad y control de costos.
 #### **Verificación en el portal:**
 - Monitor → Alert rules → `lab8-lb-probe-alert`
 - Cost Management → Budgets → `lab8-budget`
+
+![alt text](Images/AlertAzure.png)
+![alt text](Images/CostAzure.png)
