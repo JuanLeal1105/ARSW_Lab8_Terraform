@@ -40,3 +40,20 @@ variable "tags" {
   description = "Etiquetas para todos los recursos (owner, course, env, expires)."
   default     = {}
 }
+
+#  Retos
+variable "alert_email" {
+  type        = string
+  description = "Email para recibir alertas de Azure Monitor y Budget."
+}
+
+variable "budget_amount" {
+  type        = number
+  description = "Presupuesto mensual en USD para el Budget Alert."
+  default     = 10
+}
+
+variable "subscription_id" {
+  type        = string
+  description = "ID de la suscripción Azure (usado por el Budget scope)."
+}

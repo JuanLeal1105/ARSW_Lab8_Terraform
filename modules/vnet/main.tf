@@ -22,3 +22,11 @@ resource "azurerm_subnet" "mgmt" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.10.2.0/24"]
 }
+
+# Azure Bastion requiere exactamente este nombre y minimo /26
+resource "azurerm_subnet" "bastion" {
+  name                 = "AzureBastionSubnet"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.10.3.0/26"]
+}

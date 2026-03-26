@@ -38,3 +38,29 @@ module "lb" {
   allow_ssh_from_cidr = var.allow_ssh_from_cidr
   tags                = var.tags
 }
+
+
+#  Reto 1: Azure Bastion
+#  SSH seguro sin exponer puerto 22 a Internet
+module "bastion" {
+  source              = "../modules/bastion"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  prefix              = var.prefix
+  subnet_bastion_id   = module.vnet.subnet_bastion_id
+  tags                = var.tags
+}
+
+#  Reto 2: Azure Monitor + Budget Alert
+#  Alerta de health probe + alerta de presupuesto
+module "monitoring" {
+  source              = "../modules/monitoring"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  prefix              = var.prefix
+  lb_id               = module.lb.lb_id
+  alert_email         = var.alert_email
+  budget_amount       = var.budget_amount
+  subscription_id     = var.subscription_id
+  tags                = var.tags
+}

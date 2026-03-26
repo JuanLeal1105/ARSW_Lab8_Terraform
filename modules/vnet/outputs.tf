@@ -12,3 +12,8 @@ output "subnet_mgmt_id" {
   description = "ID de la subnet de gestión (Bastion / acceso admin)."
   value       = azurerm_subnet.mgmt.id
 }
+
+output "subnet_bastion_id" {
+  description = "ID de la subnet AzureBastionSubnet (requerida por Azure Bastion)."
+  value       = azurerm_subnet.bastion.id
+}

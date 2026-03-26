@@ -12,3 +12,14 @@ output "vm_names" {
   description = "Lista de nombres de las VMs en el backend pool."
   value       = module.compute.vm_names
 }
+
+#  Retos 
+output "bastion_name" {
+  description = "Nombre del Azure Bastion Host."
+  value       = module.bastion.bastion_name
+}
+
+output "bastion_dns" {
+  description = "DNS del Bastion para conectarse desde el portal de Azure."
+  value       = module.bastion.bastion_dns_name
+}
