@@ -1,3 +1,5 @@
+# La documentación y respuestas están en el archivo Answers.md"
+
 # Lab #8 — Infraestructura como Código con Terraform (Azure)
 **Curso:** BluePrints / ARSW  
 **Duración estimada:** 2–3 horas (base) + 1–2 horas (retos)  
