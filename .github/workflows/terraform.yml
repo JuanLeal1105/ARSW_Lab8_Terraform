@@ -132,7 +132,7 @@ jobs:
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && inputs.action == 'apply'
-    environment: production
+    # environment: production
 
     defaults:
       run:
@@ -181,7 +181,7 @@ jobs:
     name: "Terraform Destroy"
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' && inputs.action == 'destroy'
-    environment: production
+    # environment: production
 
     defaults:
       run:

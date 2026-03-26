@@ -215,3 +215,32 @@ De igual forma si se quiere evidenciar de forma más clara y de primera mano, se
 | workflow_dispatch apply | `apply` (requiere aprobación en Environment production) |
 | workflow_dispatch destroy | `destroy` (requiere aprobación en Environment production) |
 
+Como primera evidencia podemos observar el comprotamiento al correr el job `Terraform plan`, el cual evita hacer `apply` y `destroy` debido a la configuración que usamos dentro del `terraform.yml`:
+![alt text](Images/Plan.png)
+
+## **Parte 6. Limpieza (obligatorio)**
+Al finalizar el laboratorio, es importante destruir toda la infraestructura para evitar cargos innecesarios en Azure y dejar el entorno limpio.
+
+### **Paso a Paso**
+1. Destruir la infraestructura principal
+   ```bash
+   cd infra
+   terraform destroy -var-file=env/dev.tfvars
+   ```
+   ![alt text](Images/DestroyLocal.png)
+
+2. Verificar que el Resource Group se eliminó
+   ```bash
+   az group show -n lab8-rg
+   ```
+   ![alt text](Images/SearchGroup.png)
+
+3. (Opcional) Destruir el backend de Terraform
+   ```bash
+   cd infra/bootstrap
+   terraform destroy
+   ```
+   ![alt text](Images/TerraformDestroy.png)
+   
+
+Otra alternativa completamente válida es hacerlo desde GitHub Actions: Actions, luego Terraform CI/CD y damos click en Run workflow y seleccionamos destroy. Lo anterior requiere aprobación debido a cómo configuramos el ambiente en la Parte 2 de este lab.
