@@ -249,3 +249,44 @@ Otra alternativa completamente válida es hacerlo desde GitHub Actions: Actions,
 
 **Nota Importante ❗️**
 El despliegue en el ambiente de producción no se pudo realizar y por eso tanto `apply` como `destroy` estan dentro del mismo "contenedor" que `plan`, ya que al intentar registrar la app dentro de Azure me encontré con permiso denegado debido a que mi organización me había bloqueado la posibildiad de acceder a la opción de registros.
+
+## Retos implementados
+### Reto 1 — Azure Bastion
+Azure Bastion permite acceso SSH a las VMs sin exponer el puerto 22 a Internet.
+En lugar de una IP pública por VM, el acceso se hace a través del portal de Azure
+usando el Bastion Host como intermediario seguro.
+
+#### **Recursos creados:**
+- `azurerm_public_ip` — IP pública estática Standard para el Bastion
+- `azurerm_bastion_host` — Bastion Host en SKU Basic
+- `AzureBastionSubnet` (10.10.3.0/26) — subnet obligatoria con ese nombre exacto
+
+#### **Cómo conectarse a una VM por Bastion:**
+1. Ve al portal de Azure → Resource Group `lab8-rg`
+2. Selecciona cualquier VM (`lab8-vm-0` o `lab8-vm-1`)
+3. Clic en **Connect → Bastion**
+4. Usuario: `student`, clave: tu `id_ed25519` privada
+
+#### **Ventaja de seguridad:** Las VMs no tienen IP pública. El NSG ya no necesita
+exponer el puerto 22 a Internet — el acceso SSH queda restringido al canal
+privado del Bastion.
+
+### Reto 2 — Azure Monitor + Budget Alert
+Se implementaron dos tipos de alertas para observabilidad y control de costos.
+
+#### **Alerta de health probe (`azurerm_monitor_metric_alert`):**
+- Métrica monitoreada: `DipAvailability` del Load Balancer
+- Condición: se dispara si menos del 50% de las VMs responden al health probe
+- Frecuencia de evaluación: cada 1 minuto, ventana de 5 minutos
+- Severidad: Warning (nivel 2)
+- Notificación: email al Action Group `lab8-alerts-ag`
+
+#### **Budget Alert (`azurerm_consumption_budget_resource_group`):**
+- Presupuesto mensual: $10 USD sobre el Resource Group `lab8-rg`
+- Alerta al **80%** del presupuesto ($8 USD)
+- Alerta al **100%** del presupuesto ($10 USD)
+- Notificación: email directo sin pasar por Action Group
+
+#### **Verificación en el portal:**
+- Monitor → Alert rules → `lab8-lb-probe-alert`
+- Cost Management → Budgets → `lab8-budget`
