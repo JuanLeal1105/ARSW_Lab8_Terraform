@@ -120,6 +120,7 @@ GitHub Actions usa federación de identidades OIDC para autenticarse en Azure si
    ```
 
    El resultado se debe de ver algo como esto:
+   ![alt text](Images/SecretosGenerados.png)
 
 ### **Configuración de los Secretos**
 Para configurar los secertos se debe de ingresar primero al repositorio en Github, luego moverse a la configuración. Una vez allí nos dirigimos a la sección de secretos y le damos click en "Añadir un nuevo secreto". En total debemos tener 7 secretos los cuales son:
@@ -134,6 +135,9 @@ Para configurar los secertos se debe de ingresar primero al repositorio en Githu
 | `ALLOW_SSH_CIDR` | tu IP pública en formato `X.X.X.X/32` |
 
 **Importante ❗️** Para la ip se puede hacer uso del comando `curl ifconfig.me` y para la clave ssh, se debe usar el comando `cat ~/.ssh/id_ed25519.pub` y copiar todo el contenido del archivo.
+
+Al finalizar la configuración, GitHub se debe de ver así:
+![alt text](Images/ConfiSecretos.png)
 
 ### **Configuración del Environment con aprobación manual**
 Ve a **Settings → Environments → New environment** → nombre: `production` → activa **Required reviewers** y agrega tu usuario. Los jobs `apply` y `destroy` esperarán aprobación explícita.
@@ -174,7 +178,7 @@ Como resultado se espera que al finalizar, se desplegarán:
 - Reglas de acceso (NSG)
 
 Toda la infraestructura quedará registrada en el estado remoto de Terraform. Se puede tener como ejemplo la siguiente imagen:
-
+![alt text](Images/ResultApply.png)
 
 ## **Parte 4. Validar el Load Balancer**
 Una vez desplegada la infraestructura, podemos verificar que el Load Balancer (LB) esté funcionando correctamente y balanceando las solicitudes entre las VMs. Lo anterior lo realizamos a través del archivo localizado dentro de infra que se llama `validar_lb.sh`, el cual es un script que se encarga de hace un curl con una petición de la IP que se nos fue suministrada al final de correr `terraform apply ...`
@@ -194,9 +198,11 @@ Una vez desplegada la infraestructura, podemos verificar que el Load Balancer (L
    ```
 
 Como salida esperada tenemos el siguiente resultado:
-
+![alt text](Images/ValidacionLbScript.png)
 
 De igual forma si se quiere evidenciar de forma más clara y de primera mano, se puede ingresar a la dirección `http://<IP_Resultado_Parte_3>`:
+![alt text](Images/NgnixV0.png)
+![alt text](Images/NgnixV1.png)
 
 
 ## **Parte 5. Pipeline CI/CD — comportamiento esperado**
