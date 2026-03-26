@@ -1,4 +1,4 @@
-# La documentación y respuestas están en el archivo Answers.md"
+# La documentación está en el archivo Answers.md y la parte de la reflexión en el archivo Reflexion.md
 
 # Lab #8 — Infraestructura como Código con Terraform (Azure)
 **Curso:** BluePrints / ARSW  
