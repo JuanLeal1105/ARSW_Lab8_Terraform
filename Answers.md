@@ -244,3 +244,8 @@ Al finalizar el laboratorio, es importante destruir toda la infraestructura para
    
 
 Otra alternativa completamente válida es hacerlo desde GitHub Actions: Actions, luego Terraform CI/CD y damos click en Run workflow y seleccionamos destroy. Lo anterior requiere aprobación debido a cómo configuramos el ambiente en la Parte 2 de este lab.
+![alt text](Images/Apply.png)
+![alt text](Images/Destroy.png)
+
+**Nota Importante ❗️**
+El despliegue en el ambiente de producción no se pudo realizar y por eso tanto `apply` como `destroy` estan dentro del mismo "contenedor" que `plan`, ya que al intentar registrar la app dentro de Azure me encontré con permiso denegado debido a que mi organización me había bloqueado la posibildiad de acceder a la opción de registros.
