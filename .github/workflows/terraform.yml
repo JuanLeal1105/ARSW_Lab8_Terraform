@@ -166,6 +166,7 @@ jobs:
         run: |
           terraform plan \
             -var-file=env/dev.example.tfvars \
+            -var="location=eastus2" \
             -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
             -var="allow_ssh_from_cidr=${{ secrets.ALLOW_SSH_CIDR }}" \
             -out=plan.tfplan \
@@ -215,6 +216,7 @@ jobs:
         run: |
           terraform destroy \
             -var-file=env/dev.example.tfvars \
+            -var="location=eastus2" \
             -var="ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}" \
             -var="allow_ssh_from_cidr=${{ secrets.ALLOW_SSH_CIDR }}" \
             -auto-approve
